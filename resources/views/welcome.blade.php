@@ -17,14 +17,29 @@
                 @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="bg-gray-800 text-gray-100">
-        <nav class="bg-gray-900 shadow-lg py-4">
+        <nav class="bg-gray-900 shadow-lg py-6">
             <div class="container mx-auto flex justify-between items-center px-6">
-                <div class="text-2xl font-bold text-white">DocPhils</div>
-                <div>
-                    <a href="#about" class="text-lg mx-4 hover:text-gray-300">About</a>
-                    <a href="#projects" class="text-lg mx-4 hover:text-gray-300">Projects</a>
-                    <a href="#contact" class="text-lg mx-4 hover:text-gray-300">Contact</a>
+                <div class="flex items-center">
+                    <img src="images/profileImage.jpg" alt="profile picture" class="h-8 w-8 mr-3 rounded-full">
+                    <div class="text-2xl font-bold text-white">DocPhils</div>
                 </div>
+                <div class="hidden md:flex space-x-6">
+                    <a href="#about" class="text-lg text-white hover:text-gray-300 transition duration-300">About</a>
+                    <a href="#projects" class="text-lg text-white hover:text-gray-300 transition duration-300">Projects</a>
+                    <a href="#contact" class="text-lg text-white hover:text-gray-300 transition duration-300">Contact</a>
+                </div>
+                <div class="md:hidden">
+                    <button id="menu-button" class="text-white focus:outline-none">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div id="mobile-menu" class="hidden md:hidden px-6 pt-4 pb-2 space-y-2">
+                <a href="#about" class="block text-lg text-white hover:text-gray-300 transition duration-300">About</a>
+                <a href="#projects" class="block text-lg text-white hover:text-gray-300 transition duration-300">Projects</a>
+                <a href="#contact" class="block text-lg text-white hover:text-gray-300 transition duration-300">Contact</a>
             </div>
         </nav>
     
@@ -33,9 +48,9 @@
             <div class="absolute inset-0 bg-gray-900 bg-opacity-50 hover:bg-opacity-90"></div> <!-- Overlay -->
             <div class="container mx-auto h-full flex items-center justify-center relative">
                 <div class="text-center text-white p-8 rounded-lg">
-                    <h1 class="text-5xl font-bold">Meet DocPhils</h1>
+                    <h1 class="text-5xl font-bold hover:animate-bounce">Meet DocPhils</h1>
                     <p class="mt-4 text-xl">Discover my work and projects</p>
-                    <a href="#projects" class="mt-8 inline-block bg-blue-500 text-white py-3 px-6 rounded-lg hover:bg-blue-600 transition duration-300">View Projects</a>
+                    <a href="#contact" class="mt-8 inline-block bg-blue-500 text-xl text-white py-3 px-6 font-bold rounded-lg hover:bg-blue-600 transition duration-300">Hire Me</a>
                 </div>
             </div>
         </section>
@@ -44,7 +59,30 @@
         <section id="about" class="py-16 bg-gray-900">
             <div class="container mx-auto px-6">
                 <h2 class="text-4xl font-bold text-center text-white">About Me</h2>
-                <p class="mt-4 text-lg text-center max-w-3xl mx-auto text-gray-300">I am a Philip, a passionate developer with experience in creating dynamic and responsive websites. I enjoy working on both frontend and backend projects and continuously strive to improve my skills. I am also highly skilled in graphic design, I.T training and consultancy, as well as a certified human resource manager and recruiter.</p>
+                @if($about)
+                    <div class="prose prose-xl text-justify text-gray-300">
+                        {!! nl2br(e($about->content)) !!}
+                    </div>                
+                @else
+                    <p class="mt-4 text-lg text-center max-w-3xl mx-auto text-gray-300">No content available.</p>
+                    @if (auth()->check())
+                        <a href="{{ route('abouts.create') }}" class="bg-blue-500 text-white px-4 py-2 rounded">Add About</a>
+                    @endif
+                @endif
+
+                @if (auth()->check())
+                    <div class="text-center mt-8">
+                        @if($about)
+                            <a href="{{ route('abouts.edit', $about->id) }}" class="bg-yellow-500 text-white px-4 py-2 rounded">Edit</a>
+                            <form action="{{ route('abouts.destroy', $about->id) }}" method="POST" class="inline-block">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded" onclick="return confirm('Are you sure?')">Delete</button>
+                            </form>
+                        @endif
+                    </div>
+                @endif
+                
             </div>
         </section>
     
