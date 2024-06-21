@@ -3,10 +3,25 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AboutController;
+use App\Http\Controllers\ProjectController;
 
 
 
-Route::get('/', [AboutController::class, 'welcome'])->name('welcome');
+
+Route::get('/', function() {
+    $aboutController = new AboutController();
+
+    // Get data from welcome method
+    $welcomeData = $aboutController->welcome()->getData();
+    
+    // Get data from index method
+    $homeData = $aboutController->home()->getData();
+
+    // Merge the data arrays
+    $data = array_merge($welcomeData, $homeData);
+
+    return view('welcome', $data);
+})->name('welcome');
 
 
 
@@ -25,7 +40,17 @@ Route::middleware('auth')->group(function () {
     Route::get('/abouts/{about}/edit', [AboutController::class, 'edit'])->name('abouts.edit');
     Route::put('/abouts/{about}', [AboutController::class, 'update'])->name('abouts.update');
     Route::delete('/abouts/{about}', [AboutController::class, 'destroy'])->name('abouts.destroy');
+    //Projects Routes
+    Route::get('/projects/create', [ProjectController::class, 'create'])->name('projects.create');
+    Route::post('/projects', [ProjectController::class, 'store'])->name('projects.store');
+    Route::get('/projects/{project}/edit', [ProjectController::class, 'edit'])->name('projects.edit');
+    Route::put('/projects/{project}', [ProjectController::class, 'update'])->name('projects.update');
+    Route::delete('/projects/{project}', [ProjectController::class, 'destroy'])->name('projects.destroy');
+
 });
+
+Route::get('/projects', [ProjectController::class, 'index'])->name('projects.index');
+
 
 
 
