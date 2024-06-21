@@ -9,6 +9,7 @@
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
+        <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
 
         <!-- Styles -->
         <style>
@@ -93,7 +94,20 @@
                 <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                     <!-- Project 1 -->
                     <div class="bg-white shadow-md rounded-lg overflow-hidden">
-                        <img src="images/project1.jpg" alt="Project Image" class="w-full h-48 object-cover">
+                        <div class="relative">
+                            <!-- Slider Container -->
+                            <div id="slider" class="w-full gap-3 h-48 flex overflow-hidden">
+                                <!-- Slider Items -->
+                                <img src="images/project1.jpg" alt="Project Image 1" class="w-full h-48 object-cover">
+                                <img src="images/project2.jpg" alt="Project Image 2" class="w-full h-48 object-cover">
+                                <img src="images/project3.jpg" alt="Project Image 3" class="w-full h-48 object-cover">
+                            </div>
+                            <!-- Pagination Buttons -->
+                            <div class="absolute inset-0 flex justify-between items-center p-4">
+                                <button id="prev" class="bg-gray-800 text-white px-2 py-1 rounded-full opacity-75 hover:opacity-100">Prev</button>
+                                <button id="next" class="bg-gray-800 text-white px-2 py-1 rounded-full opacity-75 hover:opacity-100">Next</button>
+                            </div>
+                        </div>
                         <div class="p-6">
                             <h3 class="text-2xl text-gray-700 font-bold">Stunning Church Website</h3>
                             <p class="mt-2 text-gray-600">A brief description of the project goes here. It showcases the technologies used and the challenges overcome during development.</p>
@@ -150,6 +164,30 @@
                 <p>&copy; 2024 My Portfolio. All rights reserved.</p>
             </div>
         </footer>
+
+        <script>
+            const slider = document.getElementById('slider');
+            const next = document.getElementById('next');
+            const prev = document.getElementById('prev');
+            let index = 0;
+        
+            const showSlide = (index) => {
+                const slides = slider.children;
+                for (let i = 0; i < slides.length; i++) {
+                    slides[i].style.transform = `translateX(-${index * 100}%)`;
+                }
+            }
+        
+            next.addEventListener('click', () => {
+                index = (index + 1) % slider.children.length;
+                showSlide(index);
+            });
+        
+            prev.addEventListener('click', () => {
+                index = (index - 1 + slider.children.length) % slider.children.length;
+                showSlide(index);
+            });
+        </script>
     </body>
     
 </html>

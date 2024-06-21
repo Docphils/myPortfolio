@@ -4,9 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\About;
+use App\Models\Project;
 
 class AboutController extends Controller
 {
+    public function home()
+    {
+        $projects = Project::all();
+        return view('welcome', compact('projects'));
+    }
     public function welcome()
     {
         $about = About::first();
