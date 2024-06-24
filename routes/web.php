@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\ContactController;
 
 
 
@@ -47,8 +48,13 @@ Route::middleware('auth')->group(function () {
     Route::put('/projects/{project}', [ProjectController::class, 'update'])->name('projects.update');
     Route::delete('/projects/{project}', [ProjectController::class, 'destroy'])->name('projects.destroy');
 
-});
+    //Contacts Routes
+    Route::get('/contacts', [ContactController::class, 'index'])->name('contact.index');
+    Route::get('/contacts/{id}', [ContactController::class, 'show'])->name('contacts.show');
+    Route::delete('/contacts/{contact}', [ContactController::class, 'destroy'])->name('contacts.destroy');
 
+});
+Route::post('/contact', [ContactController::class, 'store'])->name('contacts.store');
 Route::get('/projects', [ProjectController::class, 'index'])->name('projects.index');
 
 

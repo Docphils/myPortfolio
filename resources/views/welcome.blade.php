@@ -50,7 +50,7 @@
             <div class="container mx-auto h-full flex items-center justify-center relative">
                 <div class="text-center text-white p-8 rounded-lg">
                     <h1 class="text-5xl font-bold hover:animate-bounce">Meet DocPhils</h1>
-                    <p class="mt-4 text-xl">Discover my work and projects</p>
+                    <p class="mt-4 text-2xl">Fullstack Laravel Developer, I.T Instructor, and H.R Professional</p>
                     <a href="#contact" class="mt-8 inline-block bg-blue-500 text-xl text-white py-3 px-6 font-bold rounded-lg hover:bg-blue-600 transition duration-300">Hire Me</a>
                 </div>
             </div>
@@ -92,43 +92,37 @@
             <div class="container mx-auto px-6">
                 <h2 class="text-4xl font-bold text-center text-white">Projects</h2>
                 <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <!-- Project 1 -->
+                    <!-- Project  -->
+                    @foreach($projects as $project)
                     <div class="bg-white shadow-md rounded-lg overflow-hidden">
                         <div class="relative">
                             <!-- Slider Container -->
-                            <div id="slider" class="w-full gap-3 h-48 flex overflow-hidden">
+                            <div id="slider-{{ $loop->index }}" class="slider w-full gap-3 h-48 flex overflow-hidden">
                                 <!-- Slider Items -->
-                                <img src="images/project1.jpg" alt="Project Image 1" class="w-full h-48 object-cover">
-                                <img src="images/project2.jpg" alt="Project Image 2" class="w-full h-48 object-cover">
-                                <img src="images/project3.jpg" alt="Project Image 3" class="w-full h-48 object-cover">
+                                @php
+                                $imageMedia = array_filter(explode(',', $project['media']), function($media) {
+                                    return Str::endsWith($media, ['.jpg', '.jpeg', '.png', '.gif']);
+                                });
+                                @endphp
+
+                                @foreach($imageMedia as $image)
+                                <div class="w-full h-48 flex-shrink-0">
+                                    <img src="{{ asset('storage/' . trim($image)) }}" alt="Project Image">
+                                </div>
+                                @endforeach
                             </div>
                             <!-- Pagination Buttons -->
                             <div class="absolute inset-0 flex justify-between items-center p-4">
-                                <button id="prev" class="bg-gray-800 text-white px-2 py-1 rounded-full opacity-75 hover:opacity-100">Prev</button>
-                                <button id="next" class="bg-gray-800 text-white px-2 py-1 rounded-full opacity-75 hover:opacity-100">Next</button>
+                                <button id="prev-{{ $loop->index }}" class="prev bg-gray-800 text-white px-2 py-1 rounded-full opacity-75 hover:opacity-100">Prev</button>
+                                <button id="next-{{ $loop->index }}" class="next bg-gray-800 text-white px-2 py-1 rounded-full opacity-75 hover:opacity-100">Next</button>
                             </div>
-                        </div>
-                        <div class="p-6">
-                            <h3 class="text-2xl text-gray-700 font-bold">Stunning Church Website</h3>
-                            <p class="mt-2 text-gray-600">A brief description of the project goes here. It showcases the technologies used and the challenges overcome during development.</p>
-                        </div>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="text-2xl text-gray-700 font-bold">{{ $project->title }}</h3>
+                                <p class="mt-2 text-gray-600 line-clamp-2">{{ $project->description }}</p>
+                            </div>
                     </div>
-                    <!-- Project 2 -->
-                    <div class="bg-white shadow-md rounded-lg overflow-hidden">
-                        <img src="images/project2.jpg" alt="Project Image" class="w-full h-48 object-cover">
-                        <div class="p-6">
-                            <h3 class="text-2xl text-gray-700 font-bold">Comprehensive Business Website</h3>
-                            <p class="mt-2 text-gray-600">A brief description of the project goes here. It showcases the technologies used and the challenges overcome during development.</p>
-                        </div>
-                    </div>
-                    <!-- Project 3 -->
-                    <div class="bg-white shadow-md rounded-lg overflow-hidden">
-                        <img src="images/project3.jpg" alt="Project Image" class="w-full h-48 object-cover">
-                        <div class="p-6">
-                            <h3 class="text-2xl text-gray-700 font-bold">Captivating Portfolio Website</h3>
-                            <p class="mt-2 text-gray-600">A brief description of the project goes here. It showcases the technologies used and the challenges overcome during development.</p>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </section>
@@ -136,25 +130,43 @@
         <!-- Contact Section -->
         <section id="contact" class="py-16 bg-gray-800">
             <div class="container mx-auto px-6">
+                @if(session('success'))
+                    <div class="bg-green-500 text-white p-4 mb-4 rounded-lg">
+                        {{ session('success') }}
+                    </div>
+                @endif
+
+                @if($errors->any())
+                    <div class="bg-red-500 text-white p-4 mb-4 rounded-lg">
+                        <ul>
+                            @foreach($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
                 <h2 class="text-4xl font-bold text-center text-white">Contact</h2>
                 <p class="mt-4 text-lg text-center max-w-2xl mx-auto text-gray-300">Feel free to reach out to me via the form below for any inquiries or collaboration opportunities.</p>
-                <form class="mt-8 max-w-xl mx-auto bg-gray-900 p-8 rounded-lg">
+                <form method="POST" action="{{ route('contacts.store') }}" class="mt-8 max-w-xl mx-auto bg-gray-900 p-8 rounded-lg">
+                    @csrf
                     <div class="mb-4">
-                        <label class="block text-gray-100 text-sm font-bold mb-2" for="name">Name</label>
-                        <input type="text" id="name" class="w-full px-3 py-2 border rounded-lg bg-gray-700 text-white" placeholder="Your Name">
+                        <label for="name" class="block text-gray-100 text-sm font-bold mb-2">Name</label>
+                        <input type="text" id="name" name="name" class="w-full px-3 py-2 border rounded-lg bg-gray-700 text-white" placeholder="Your Name" required>
                     </div>
                     <div class="mb-4">
-                        <label class="block text-gray-100 text-sm font-bold mb-2" for="email">Email</label>
-                        <input type="email" id="email" class="w-full px-3 py-2 border rounded-lg bg-gray-700 text-white" placeholder="Your Email">
+                        <label for="email" class="block text-gray-100 text-sm font-bold mb-2">Email</label>
+                        <input type="email" id="email" name="email" class="w-full px-3 py-2 border rounded-lg bg-gray-700 text-white" placeholder="Your Email" required>
                     </div>
                     <div class="mb-4">
-                        <label class="block text-gray-100 text-sm font-bold mb-2" for="message">Message</label>
-                        <textarea id="message" class="w-full px-3 py-2 border rounded-lg bg-gray-700 text-white" placeholder="Your Message"></textarea>
+                        <label for="message" class="block text-gray-100 text-sm font-bold mb-2">Message</label>
+                        <textarea id="message" name="message" class="w-full px-3 py-2 border rounded-lg bg-gray-700 text-white" placeholder="Your Message" required></textarea>
                     </div>
                     <div class="text-center">
                         <button type="submit" class="bg-blue-500 text-white py-3 px-6 rounded-lg hover:bg-blue-600 transition duration-300">Send Message</button>
                     </div>
                 </form>
+                
             </div>
         </section>
     
@@ -166,28 +178,34 @@
         </footer>
 
         <script>
-            const slider = document.getElementById('slider');
-            const next = document.getElementById('next');
-            const prev = document.getElementById('prev');
-            let index = 0;
+            document.addEventListener('DOMContentLoaded', () => {
+                const sliders = document.querySelectorAll('.slider');
         
-            const showSlide = (index) => {
-                const slides = slider.children;
-                for (let i = 0; i < slides.length; i++) {
-                    slides[i].style.transform = `translateX(-${index * 100}%)`;
-                }
-            }
+                sliders.forEach((slider, index) => {
+                    const next = document.getElementById(`next-${index}`);
+                    const prev = document.getElementById(`prev-${index}`);
+                    let slideIndex = 0;
         
-            next.addEventListener('click', () => {
-                index = (index + 1) % slider.children.length;
-                showSlide(index);
-            });
+                    const showSlide = (index) => {
+                        const slides = slider.children;
+                        for (let i = 0; i < slides.length; i++) {
+                            slides[i].style.transform = `translateX(-${index * 100}%)`;
+                        }
+                    }
         
-            prev.addEventListener('click', () => {
-                index = (index - 1 + slider.children.length) % slider.children.length;
-                showSlide(index);
+                    next.addEventListener('click', () => {
+                        slideIndex = (slideIndex + 1) % slider.children.length;
+                        showSlide(slideIndex);
+                    });
+        
+                    prev.addEventListener('click', () => {
+                        slideIndex = (slideIndex - 1 + slider.children.length) % slider.children.length;
+                        showSlide(slideIndex);
+                    });
+                });
             });
         </script>
+        
     </body>
     
 </html>
