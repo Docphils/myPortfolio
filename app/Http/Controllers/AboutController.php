@@ -10,7 +10,7 @@ class AboutController extends Controller
 {
     public function home()
     {
-        $projects = Project::all();
+        $projects = Project::latest()->take(3)->get();
         return view('welcome', compact('projects'));
     }
     public function welcome()
