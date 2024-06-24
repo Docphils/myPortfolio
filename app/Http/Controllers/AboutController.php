@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\About;
 use App\Models\Project;
+use App\Models\Contact;
+use App\Models\User;
 
 class AboutController extends Controller
 {
@@ -21,8 +23,11 @@ class AboutController extends Controller
 
     public function dashboard()
     {
+        $totalProjects = Project::count();
+        $totalMessages = Contact::count();
+        $totalUsers = User::count();
         $about = About::first();
-        return view('dashboard', compact('about'));
+        return view('dashboard', compact('about', 'totalProjects', 'totalMessages'));
     }
 
     public function create()
