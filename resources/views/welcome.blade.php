@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
+        <title>{{config('app.name')}}</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -28,6 +28,9 @@
                     <a href="#about" class="text-lg text-white hover:text-gray-300 transition duration-300">About</a>
                     <a href="#projects" class="text-lg text-white hover:text-gray-300 transition duration-300">Projects</a>
                     <a href="#contact" class="text-lg text-white hover:text-gray-300 transition duration-300">Contact</a>
+                    @if (auth()->check())
+                        <a href="{{ route('dashboard') }}" class="text-lg text-white hover:text-gray-300 transition duration-300">Dashboard</a>
+                    @endif
                 </div>
                 <div class="md:hidden">
                     <button id="menu-button" class="text-white focus:outline-none">
@@ -41,11 +44,31 @@
                 <a href="#about" class="block text-lg text-white hover:text-gray-300 transition duration-300">About</a>
                 <a href="#projects" class="block text-lg text-white hover:text-gray-300 transition duration-300">Projects</a>
                 <a href="#contact" class="block text-lg text-white hover:text-gray-300 transition duration-300">Contact</a>
+                @if (auth()->check())
+                    <a href="{{ route('dashboard') }}" class="block text-lg text-white hover:text-gray-300 transition duration-300">Dashboard</a>
+                @endif
             </div>
+           
         </nav>
     
         <!-- Hero Section -->
         <section class="bg-cover bg-center h-screen relative" style="background-image: url('images/portfolioimage.jpg');">
+            @if(session('success'))
+                    <div class="bg-green-300 text-white p-4 mb-4 rounded-lg">
+                        {{ session('success') }}
+                    </div>
+                @endif
+
+                @if($errors->any())
+                    <div class="bg-red-300 text-white p-4 mb-4 rounded-lg">
+                        <ul>
+                            @foreach($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
             <div class="absolute inset-0 bg-gray-900 bg-opacity-50 hover:bg-opacity-90"></div> <!-- Overlay -->
             <div class="container mx-auto h-full flex items-center justify-center relative">
                 <div class="text-center text-white p-8 rounded-lg">
@@ -59,9 +82,9 @@
         <!-- About Section -->
         <section id="about" class="py-16 bg-gray-900">
             <div class="container mx-auto px-6">
-                <h2 class="text-4xl font-bold text-center text-white">About Me</h2>
+                <h2 class="text-4xl font-bold py-3 text-center text-white">About Me</h2>
                 @if($about)
-                    <div class="prose prose-xl text-justify text-gray-300">
+                    <div class="prose prose-2xl text-justify text-gray-300">
                         {!! nl2br(e($about->content)) !!}
                     </div>                
                 @else
@@ -69,19 +92,6 @@
                     @if (auth()->check())
                         <a href="{{ route('abouts.create') }}" class="bg-blue-500 text-white px-4 py-2 rounded">Add About</a>
                     @endif
-                @endif
-
-                @if (auth()->check())
-                    <div class="text-center mt-8">
-                        @if($about)
-                            <a href="{{ route('abouts.edit', $about->id) }}" class="bg-yellow-500 text-white px-4 py-2 rounded">Edit</a>
-                            <form action="{{ route('abouts.destroy', $about->id) }}" method="POST" class="inline-block">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded" onclick="return confirm('Are you sure?')">Delete</button>
-                            </form>
-                        @endif
-                    </div>
                 @endif
                 
             </div>
@@ -124,43 +134,31 @@
                     </div>
                     @endforeach
                 </div>
+                <div class="mx-auto text-center my-3">
+                    <a href="{{ route('projects.index')}}" class="text-lg bg-gray-600 text-white p-2 rounded-lg hover:bg-gray-700">More Projects</a>
+                </div>
             </div>
         </section>
+        <hr>
     
         <!-- Contact Section -->
-        <section id="contact" class="py-16 bg-gray-800">
+        <section id="contact" class="py-10 bg-gray-800">
             <div class="container mx-auto px-6">
-                @if(session('success'))
-                    <div class="bg-green-500 text-white p-4 mb-4 rounded-lg">
-                        {{ session('success') }}
-                    </div>
-                @endif
-
-                @if($errors->any())
-                    <div class="bg-red-500 text-white p-4 mb-4 rounded-lg">
-                        <ul>
-                            @foreach($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-
                 <h2 class="text-4xl font-bold text-center text-white">Contact</h2>
                 <p class="mt-4 text-lg text-center max-w-2xl mx-auto text-gray-300">Feel free to reach out to me via the form below for any inquiries or collaboration opportunities.</p>
                 <form method="POST" action="{{ route('contacts.store') }}" class="mt-8 max-w-xl mx-auto bg-gray-900 p-8 rounded-lg">
                     @csrf
                     <div class="mb-4">
                         <label for="name" class="block text-gray-100 text-sm font-bold mb-2">Name</label>
-                        <input type="text" id="name" name="name" class="w-full px-3 py-2 border rounded-lg bg-gray-700 text-white" placeholder="Your Name" required>
+                        <input type="text" id="name" name="name" class="w-full px-3 py-2 border rounded-lg bg-gray-700 text-white" placeholder="Your Name" autocomplete="off" required>
                     </div>
                     <div class="mb-4">
                         <label for="email" class="block text-gray-100 text-sm font-bold mb-2">Email</label>
-                        <input type="email" id="email" name="email" class="w-full px-3 py-2 border rounded-lg bg-gray-700 text-white" placeholder="Your Email" required>
+                        <input type="email" id="email" name="email" class="w-full px-3 py-2 border rounded-lg bg-gray-700 text-white" placeholder="Your Email"autocomplete="off"  required>
                     </div>
                     <div class="mb-4">
                         <label for="message" class="block text-gray-100 text-sm font-bold mb-2">Message</label>
-                        <textarea id="message" name="message" class="w-full px-3 py-2 border rounded-lg bg-gray-700 text-white" placeholder="Your Message" required></textarea>
+                        <textarea id="message" name="message" class="w-full px-3 py-2 border rounded-lg bg-gray-700 text-white" placeholder="Your Message" autocomplete="off" required></textarea>
                     </div>
                     <div class="text-center">
                         <button type="submit" class="bg-blue-500 text-white py-3 px-6 rounded-lg hover:bg-blue-600 transition duration-300">Send Message</button>
@@ -173,7 +171,7 @@
         <!-- Footer -->
         <footer class="py-4 bg-gray-900 text-white">
             <div class="container mx-auto text-center">
-                <p>&copy; 2024 My Portfolio. All rights reserved.</p>
+                <p>&copy; 2024 DocPhils. All rights reserved.</p>
             </div>
         </footer>
 

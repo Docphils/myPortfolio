@@ -49,13 +49,15 @@ Route::middleware('auth')->group(function () {
     Route::delete('/projects/{project}', [ProjectController::class, 'destroy'])->name('projects.destroy');
 
     //Contacts Routes
-    Route::get('/contacts', [ContactController::class, 'index'])->name('contact.index');
+    Route::get('/contacts', [ContactController::class, 'index'])->name('contacts.index');
     Route::get('/contacts/{id}', [ContactController::class, 'show'])->name('contacts.show');
     Route::delete('/contacts/{contact}', [ContactController::class, 'destroy'])->name('contacts.destroy');
 
 });
-Route::post('/contact', [ContactController::class, 'store'])->name('contacts.store');
-Route::get('/projects', [ProjectController::class, 'index'])->name('projects.index');
+    Route::post('/contact', [ContactController::class, 'store'])->name('contacts.store');
+    Route::get('/projects', [ProjectController::class, 'index'])->name('projects.index');
+    Route::get('/projects/{id}', [ProjectController::class, 'show'])->name('projects.show');
+
 
 
 

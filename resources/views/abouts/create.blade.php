@@ -1,11 +1,11 @@
 <x-app-layout>
     <x-slot name="header">
-      <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight"> Add About Me </h2>
+      <h2 class="font-semibold text-xl text-gray-200 dark:text-gray-200 leading-tight"> Add About Me </h2>
     </x-slot>
     <div class="py-12">
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-          <div class="p-6 text-gray-900 dark:text-gray-100">
+          <div class="p-6 text-gray-300 dark:text-gray-100">
             <section id="about" class="py-16 bg-gray-900">
               <div class="container mx-auto px-6">
                 <form action="{{ route('abouts.store') }}" method="POST" class="mt-8 max-w-3xl mx-auto">
