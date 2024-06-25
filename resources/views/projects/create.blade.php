@@ -29,7 +29,8 @@
                       <span class="text-red-500 text-sm">{{ $message }}</span>
                     @enderror
                 </div>                  
-                <div class="text-center">
+                <div class="flex justify-between">
+                    <button type="button" onclick="window.history.back();"  class="bg-yellow-500 text-white px-4 py-2 rounded">Cancel</button>
                     <button type="submit" class="bg-gray-900 text-white px-4 py-2 rounded">Create</button>
                 </div>
             </form>

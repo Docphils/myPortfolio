@@ -24,9 +24,9 @@
                 <div class="text-2xl font-bold text-white">DocPhils</div>
             </div>
             <div class="hidden md:flex space-x-6">
-                <a href="{{ url('/') }}" class="text-lg text-white hover:text-gray-300 transition duration-300">Home</a>
+                <a href="{{ url('/') }}" class="text-lg text-white shadow-lg shadow-gray-600 px-1 rounded-md hover:text-gray-300 transition duration-300">Home</a>
                 @if (auth()->check())
-                    <a href="{{ route('dashboard') }}" class="text-lg text-white hover:text-gray-300 transition duration-300">Dashboard</a>
+                    <a href="{{ route('dashboard') }}" class="text-lg text-white shadow-lg  px-1 rounded-md shadow-gray-600 hover:text-gray-300 transition duration-300">Dashboard</a>
                 @endif
             </div>
             <div class="md:hidden">
@@ -73,6 +73,26 @@
                             <button id="prev-{{ $loop->index }}" class="prev bg-gray-800 text-white px-2 py-1 rounded-full opacity-75 hover:opacity-100">Prev</button>
                             <button id="next-{{ $loop->index }}" class="next bg-gray-800 text-white px-2 py-1 rounded-full opacity-75 hover:opacity-100">Next</button>
                         </div>
+                        <div class="inset-0">
+                            @if (auth()->check())
+                                 <!-- Delete Icon -->
+                               <form class="flex space-x-2" action="{{ route('projects.destroy', $project->id) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                
+                                <!-- Delete Button -->
+                                <button type="submit" onclick="return confirm('Are you sure you want to delete this project?')" class="absolute top-2 right-2 text-red-500 hover:text-red-700">
+                                    
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="w-4 h-4" fill="red" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"/>
+                                    </svg>
+                                </button>
+                            </form>
+                            
+                            @endif
+                              
+                              
+                           </div>
                         </div>
                         <div class="p-6">
                             <a href="{{ route('projects.show', $project->id)  }}" class="text-2xl text-gray-700 font-bold">{{ $project->title }}
