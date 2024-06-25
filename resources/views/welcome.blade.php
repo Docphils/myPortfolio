@@ -25,11 +25,11 @@
                     <div class="text-2xl font-bold text-white">DocPhils</div>
                 </div>
                 <div class="hidden md:flex space-x-6">
-                    <a href="#about" class="text-lg text-white hover:text-gray-300 transition duration-300">About</a>
-                    <a href="#projects" class="text-lg text-white hover:text-gray-300 transition duration-300">Projects</a>
-                    <a href="#contact" class="text-lg text-white hover:text-gray-300 transition duration-300">Contact</a>
+                    <a href="#about" class="text-lg text-white hover:text-gray-300 px-1 rounded-md shadow-lg shadow-gray-600 transition duration-300">About</a>
+                    <a href="#projects" class="text-lg text-white shadow-lg shadow-gray-600 px-1 rounded-md hover:text-gray-300 transition duration-300">Projects</a>
+                    <a href="#contact" class="text-lg text-white shadow-lg shadow-gray-600  px-1 rounded-md hover:text-gray-300 transition duration-300">Contact</a>
                     @if (auth()->check())
-                        <a href="{{ route('dashboard') }}" class="text-lg text-white hover:text-gray-300 transition duration-300">Dashboard</a>
+                        <a href="{{ route('dashboard') }}" class="text-lg text-white shadow-lg  px-1 rounded-md shadow-gray-600 hover:text-gray-300 transition duration-300">Dashboard</a>
                     @endif
                 </div>
                 <div class="md:hidden">
