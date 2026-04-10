@@ -23,7 +23,7 @@
             <div class="container mx-auto px-6">
                 <h2 class="text-4xl font-bold text-center text-white mb-4">{{ $project->title }}</h2>
     
-                <div class="max-w-6xl mx-auto bg-white shadow-md rounded-lg overflow-hidden">
+                <div class="max-w-6xl w-2/3 mx-auto bg-white shadow-md rounded-lg overflow-hidden">
                     <div class="relative">
                         <!-- Slider Container -->
                         <div id="slider" class="slider w-full gap-3 h-96 flex overflow-hidden">
@@ -35,21 +35,26 @@
                             @endphp
     
                             @foreach($imageMedia as $image)
-                                <div class="w-full h-96 flex-shrink-0">
-                                    <img src="{{ asset('storage/' . trim($image)) }}" alt="Project Image" class="w-full h-96 object-cover">
-                                </div>
+                                <a href="{{ asset('storage/' . trim($image)) }}" target="_blank" class="cursor-pointer w-full h-full flex-shrink-0">
+                                    <img src="{{ asset('storage/' . trim($image)) }}" alt="Project Image" class="w-full object-cover">
+                                </a>
                             @endforeach
                         </div>
-                        <!-- Pagination Buttons -->
-                        <div class="absolute inset-0 flex justify-between items-center p-4">
-                            <button id="prev" class="prev bg-gray-800 text-white px-2 py-1 rounded-full opacity-75 hover:opacity-100">Prev</button>
-                            <button id="next" class="next bg-gray-800 text-white px-2 py-1 rounded-full opacity-75 hover:opacity-100">Next</button>
-                        </div>
+                        
                     </div>
+
+                    <!-- Pagination Buttons -->
+                        <div class="relative flex justify-between items-center p-4 mb-0">
+                            <div id="prev" class="prev cursor-pointer bg-gray-800 text-white px-2 py-1 rounded-full opacity-75 hover:opacity-100">Prev</div>
+                            <div id="next" class="next cursor-pointer bg-gray-800 text-white px-2 py-1 rounded-full opacity-75 hover:opacity-100">Next</div>
+                        </div>
     
-                    <div class="p-6">
+                    <div class="p-6 pt-1">
                         <h3 class="text-2xl text-gray-700 font-bold">{{ $project->title }}</h3>
                         <p class="mt-2 text-gray-600">{!! nl2br(e($project->description)) !!}</p>
+                        <p class="mt-4 mx-auto text-center">
+                            <a href="{{ $project->link ?? '#'}}" target="_blank" class="cursor-pointer underline text-2xl text-gray-700 font-bold rounded text-white bg-blue-500 p-2 text-sm"> Visit Project </a>
+                        </p>
                     </div>
                 </div>
     

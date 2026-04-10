@@ -7,13 +7,25 @@ use App\Models\About;
 use App\Models\Project;
 use App\Models\Contact;
 use App\Models\User;
+use Illuminate\Support\Str;
+
 
 class AboutController extends Controller
 {
     public function home()
     {
-        $projects = Project::latest()->take(3)->get();
-        return view('welcome', compact('projects'));
+        $projects = Project::latest()->get();
+        // Filter projects with images
+        $projectImages = $projects->filter(function ($project) {
+            $imageMedia = array_filter(explode(',', $project->media), function ($media) {
+                return Str::endsWith($media, ['.jpg', '.jpeg', '.png', '.gif']);
+            });
+            return count($imageMedia) > 0;
+        });
+        // Take only the first three filtered projects
+        $projectImages = $projectImages->take(9);
+
+        return view('welcome', compact('projectImages'));
     }
     public function welcome()
     {

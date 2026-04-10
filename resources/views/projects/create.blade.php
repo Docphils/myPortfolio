@@ -5,7 +5,6 @@
 
     <section class="py-16">
         <div class="container mx-auto px-6">
-            <h2 class="text-4xl font-bold text-gray-200 text-center mb-8">Create Project</h2>
             <form action="{{ route('projects.store') }}" method="POST" enctype="multipart/form-data" class="bg-white p-8 rounded-lg shadow-md">
                 @csrf
                 <div class="mb-4">
@@ -28,7 +27,14 @@
                     @error('media')
                       <span class="text-red-500 text-sm">{{ $message }}</span>
                     @enderror
-                </div>                  
+                </div>  
+                <div class="mb-4">
+                    <label for="link" class="block text-gray-700 font-bold">Project Link</label>
+                    <input type="url" name="link" id="link" class="w-full p-2 border border-gray-300 rounded mt-1" value="{{ old('title') }}">
+                    @error('link')
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                    @enderror
+                </div>                
                 <div class="flex justify-between">
                     <button type="button" onclick="window.history.back();"  class="bg-yellow-500 text-white px-4 py-2 rounded">Cancel</button>
                     <button type="submit" class="bg-gray-900 text-white px-4 py-2 rounded">Create</button>

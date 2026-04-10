@@ -8,6 +8,7 @@
     <div class="mt-8 max-w-xl mx-auto shadow-lg bg-gray-900 p-8 rounded-lg">
         <h1 class="text-3xl font-bold text-white mb-4">{{ $message->name }}</h1>
         <p class="text-gray-300 mb-4">{{ $message->created_at->format('M d, Y H:i A') }}</p>
+        <p class="mb-2 text-red-500">Email: {{ $message->email }}</p>
         <p class="text-gray-100">{{ $message->message }}</p>
         <a href="{{ route('contacts.index') }}" class="block mt-4 text-blue-500 hover:text-blue-600">&larr; Back to Messages</a>
     </div>

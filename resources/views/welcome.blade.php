@@ -10,6 +10,7 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
         <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}?v={{ time() }}">
 
         <!-- Styles -->
         <style>
@@ -73,18 +74,19 @@
             <div class="container mx-auto h-full flex items-center justify-center relative">
                 <div class="text-center text-white p-8 rounded-lg">
                     <h1 class="text-5xl font-bold hover:animate-bounce">Meet DocPhils</h1>
-                    <p class="mt-4 text-2xl">Fullstack Laravel Developer, I.T Instructor, and H.R Professional</p>
+                    <p class="mt-4 text-2xl">Fullstack Web Developer and EdTech Specialist </p>
                     <a href="#contact" class="mt-8 inline-block bg-blue-500 text-xl text-white py-3 px-6 font-bold rounded-lg hover:bg-blue-600 transition duration-300">Hire Me</a>
                 </div>
             </div>
         </section>
+
     
         <!-- About Section -->
         <section id="about" class="py-16 bg-gray-900">
-            <div class="container mx-auto px-6">
+            <div class="container text-lg mx-auto px-6">
                 <h2 class="text-4xl font-bold py-3 text-center text-white">About Me</h2>
                 @if($about)
-                    <div class="prose prose-2xl text-justify text-gray-300">
+                    <div class="prose prose-xl text-justify text-gray-300">
                         {!! nl2br(e($about->content)) !!}
                     </div>                
                 @else
@@ -95,6 +97,8 @@
                 @endif
                 
             </div>
+
+            
         </section>
     
         <!-- Projects Section -->
@@ -103,7 +107,7 @@
                 <h2 class="text-4xl font-bold text-center text-white">Projects</h2>
                 <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                     <!-- Project  -->
-                    @foreach($projects as $project)
+                    @foreach($projectImages as $project)
                     <div class="bg-white shadow-md rounded-lg overflow-hidden">
                         <div class="relative">
                             <!-- Slider Container -->
@@ -170,8 +174,12 @@
     
         <!-- Footer -->
         <footer class="py-4 bg-gray-900 text-white">
+            <div class="relative sm:flex font-bold text-lg justify-center text-center mx-auto gap-8 mb-6">
+                <div class="relative mx-3"><span class="text-blue-500">Phone:</span> +234(0)7062599737 </div>
+                <div class="relative">  <span class="text-blue-500">Email:</span> docphils64@gmail.com <span class="text-blue-500">|</span> philip@mephed.ng </div>
+            </div>
             <div class="container mx-auto text-center">
-                <p>&copy; 2024 DocPhils. All rights reserved.</p>
+                <p>&copy; DocPhils 2024. All rights reserved.</p>
             </div>
         </footer>
 
