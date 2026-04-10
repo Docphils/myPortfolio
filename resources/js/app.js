@@ -1,17 +1,14 @@
 import './bootstrap';
 
-import Alpine from 'alpinejs';
+document.addEventListener('DOMContentLoaded', () => {
+    const menuButton = document.getElementById('menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
 
-window.Alpine = Alpine;
+    if (!menuButton || !mobileMenu) {
+        return;
+    }
 
-Alpine.start();
-
-
-    document.getElementById('menu-button').addEventListener('click', function() {
-        var menu = document.getElementById('mobile-menu');
-        if (menu.classList.contains('hidden')) {
-            menu.classList.remove('hidden');
-        } else {
-            menu.classList.add('hidden');
-        }
+    menuButton.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
     });
+});
