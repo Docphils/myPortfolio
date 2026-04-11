@@ -47,6 +47,18 @@ class HomePage extends Component
         ];
     }
 
+    protected function starterSubmitRules(): array
+    {
+        return [
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'max:255'],
+            'projectType' => ['required', 'string', 'max:100'],
+            'budgetRange' => ['required', 'string', 'max:100'],
+            'timeline' => ['required', 'string', 'max:100'],
+            'goals' => ['required', 'string', 'min:10', 'max:1000'],
+        ];
+    }
+
     public function openProjectStarter(): void
     {
         $this->showProjectStarter = true;
@@ -101,16 +113,54 @@ class HomePage extends Component
         $validated = $this->validate();
         RateLimiter::hit($throttleKey, 60);
 
-        $contact = Contact::create($validated);
+        $this->storeContactAndNotify($validated);
+
+        $this->reset(['name', 'email', 'message']);
+        session()->flash('success', 'Message sent successfully!');
+    }
+
+    public function submitProjectStarter(): void
+    {
+        $throttleKey = 'homepage-starter:'.Str::lower($this->email).'|'.request()->ip();
+        if (RateLimiter::tooManyAttempts($throttleKey, 3)) {
+            session()->flash('error', 'Too many attempts. Please wait a minute and try again.');
+            return;
+        }
+
+        $validated = $this->validate($this->starterSubmitRules());
+        RateLimiter::hit($throttleKey, 60);
+
+        $this->storeContactAndNotify([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'message' => "Project Type: {$validated['projectType']}\n"
+                ."Budget Range: {$validated['budgetRange']}\n"
+                ."Timeline: {$validated['timeline']}\n"
+                ."Goals:\n{$validated['goals']}",
+        ]);
+
+        $this->reset([
+            'name',
+            'email',
+            'message',
+            'projectType',
+            'budgetRange',
+            'timeline',
+            'goals',
+        ]);
+        $this->showProjectStarter = false;
+        session()->flash('success', 'Project request sent successfully!');
+    }
+
+    protected function storeContactAndNotify(array $payload): void
+    {
+        $contact = Contact::create($payload);
 
         try {
             Mail::to(config('mail.contact_recipients'))->send(new ContactMessageReceived($contact));
         } catch (Throwable $exception) {
             report($exception);
         }
-
-        $this->reset(['name', 'email', 'message']);
-        session()->flash('success', 'Message sent successfully!');
     }
 
     public function render()

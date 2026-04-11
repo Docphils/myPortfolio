@@ -66,4 +66,30 @@ class HomePageTest extends TestCase
             return $mail->contact->is($contact);
         });
     }
+
+    public function test_project_starter_submits_directly_from_modal(): void
+    {
+        Mail::fake();
+
+        Livewire::test(HomePage::class)
+            ->call('openProjectStarter')
+            ->set('name', 'Philip Doe')
+            ->set('email', 'philip@example.com')
+            ->set('projectType', 'Web Application (SaaS)')
+            ->set('budgetRange', 'NGN 1,500,000 - NGN 3,000,000')
+            ->set('timeline', '1 - 2 Months')
+            ->set('goals', 'Build and launch a customer portal with analytics and billing.')
+            ->call('submitProjectStarter')
+            ->assertHasNoErrors()
+            ->assertSet('showProjectStarter', false);
+
+        $contact = Contact::query()->first();
+        $this->assertNotNull($contact);
+        $this->assertStringContainsString('Project Type: Web Application (SaaS)', $contact->message);
+        $this->assertStringContainsString('Goals:', $contact->message);
+
+        Mail::assertSent(ContactMessageReceived::class, function (ContactMessageReceived $mail) use ($contact) {
+            return $mail->contact->is($contact);
+        });
+    }
 }

@@ -61,12 +61,24 @@
                 <div class="flex items-start justify-between gap-4">
                     <div>
                         <h2 class="text-2xl font-semibold text-white">Project Starter</h2>
-                        <p class="mt-1 text-sm text-gray-300">Share a quick brief and I will pre-fill the contact form for a faster kickoff.</p>
+                        <p class="mt-1 text-sm text-gray-300">Share your details and project brief to submit directly from here.</p>
                     </div>
                     <button type="button" wire:click="closeProjectStarter" class="rounded bg-gray-800 px-3 py-1 text-sm text-gray-200 hover:bg-gray-700">Close</button>
                 </div>
 
-                <form wire:submit="applyProjectStarter" class="mt-5 space-y-4">
+                <form wire:submit="submitProjectStarter" class="mt-5 space-y-4">
+                    <div class="grid gap-4 sm:grid-cols-2">
+                        <div>
+                            <label class="mb-1 block text-sm text-gray-300">Name</label>
+                            <input wire:model="name" type="text" class="w-full rounded-md border border-gray-700 bg-gray-800 px-3 py-2 text-white">
+                            @error('name') <p class="mt-1 text-xs text-red-400">{{ $message }}</p> @enderror
+                        </div>
+                        <div>
+                            <label class="mb-1 block text-sm text-gray-300">Email</label>
+                            <input wire:model="email" type="email" class="w-full rounded-md border border-gray-700 bg-gray-800 px-3 py-2 text-white">
+                            @error('email') <p class="mt-1 text-xs text-red-400">{{ $message }}</p> @enderror
+                        </div>
+                    </div>
                     <div class="grid gap-4 sm:grid-cols-3">
                         <div>
                             <label class="mb-1 block text-sm text-gray-300">Project Type</label>
@@ -116,7 +128,7 @@
                     </div>
                     <div class="flex justify-end">
                         <button type="submit" class="rounded-md bg-blue-600 px-5 py-2 text-sm font-semibold text-white hover:bg-blue-500">
-                            Apply to Contact Form
+                            Send Project Request
                         </button>
                     </div>
                 </form>
