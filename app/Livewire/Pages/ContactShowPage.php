@@ -4,7 +4,11 @@ namespace App\Livewire\Pages;
 
 use App\Models\Contact;
 use Livewire\Component;
+use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 
+#[Layout('layouts.app')]
+#[Title('Contact Details')]
 class ContactShowPage extends Component
 {
     public Contact $contact;

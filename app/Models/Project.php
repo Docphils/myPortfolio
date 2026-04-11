@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Project extends Model
 {
@@ -14,7 +16,35 @@ class Project extends Model
         'description',
         'media',
         'link',
+        'is_published',
+        'is_featured',
+        'published_at',
     ];
+
+    protected $casts = [
+        'is_published' => 'boolean',
+        'is_featured' => 'boolean',
+        'published_at' => 'datetime',
+    ];
+
+    public function caseStudies(): HasMany
+    {
+        return $this->hasMany(CaseStudy::class);
+    }
+
+    public function scopePublished(Builder $query): Builder
+    {
+        return $query
+            ->where('is_published', true)
+            ->where(function (Builder $builder): void {
+                $builder->whereNull('published_at')->orWhere('published_at', '<=', now());
+            });
+    }
+
+    public function scopeFeatured(Builder $query): Builder
+    {
+        return $query->where('is_featured', true);
+    }
 
     public function mediaItems(): array
     {

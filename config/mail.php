@@ -113,4 +113,18 @@ return [
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Contact Notification Recipients
+    |--------------------------------------------------------------------------
+    |
+    | These addresses receive notifications whenever a new contact message
+    | is submitted from the homepage contact form.
+    |
+    */
+    'contact_recipients' => array_values(array_filter(array_map(
+        static fn (string $email): string => trim($email),
+        explode(',', (string) env('MAIL_CONTACT_RECIPIENTS', 'philip@mephed.ng,docphils64@gmail.com'))
+    ))),
+
 ];

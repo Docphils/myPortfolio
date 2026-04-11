@@ -25,6 +25,6 @@
     @endif
 
     <div class="mt-6">
-        <a href="{{ route('projects.index') }}" class="text-sm text-gray-300 underline">Back to projects</a>
+        <a wire:navigate href="{{ route('projects.index') }}" class="text-sm text-gray-300 underline">Back to projects</a>
     </div>
 </main>

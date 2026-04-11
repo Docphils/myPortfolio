@@ -4,13 +4,17 @@ namespace App\Livewire\Pages;
 
 use App\Models\About;
 use Livewire\Component;
+use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 
+#[Layout('layouts.app')]
+#[Title('About Me Form')]
 class AboutFormPage extends Component
 {
-    public ?About $about = null;
+    public ?About $about;
     public string $content = '';
 
-    public function mount(?About $about = null): void
+    public function mount(?About $about): void
     {
         $this->about = $about;
         $this->content = $about?->content ?? '';

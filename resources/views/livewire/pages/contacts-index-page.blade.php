@@ -1,35 +1,41 @@
-<x-app-layout>
+<div>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl leading-tight">
-            Contact Messages
-        </h2>
+        <h2 class="font-semibold text-xl leading-tight text-slate-100">Contact Messages</h2>
     </x-slot>
 
-    <div class="mt-8 w-full max-w-4xl mx-auto rounded-lg bg-gray-900 p-8">
+    <div class="mx-auto mt-8 w-full max-w-5xl rounded-lg border border-slate-700 bg-slate-900 p-8 shadow-sm">
         @if (session('success'))
-            <div class="mb-4 rounded-md border border-green-500/40 bg-green-500/20 p-3 text-green-200">
+            <div class="mb-4 rounded-md border border-emerald-500/40 bg-emerald-500/10 p-3 text-emerald-200">
                 {{ session('success') }}
             </div>
         @endif
 
-        <ul class="divide-y divide-gray-700">
+        <div class="grid gap-3 rounded-xl border border-slate-700 bg-slate-800 p-4 md:grid-cols-4">
+            <input wire:model.live.debounce.300ms="search" type="text" placeholder="Search messages..." class="rounded border border-slate-600 bg-slate-900 px-3 py-2 text-sm text-slate-100">
+            <input wire:model.live="dateFrom" type="date" class="rounded border border-slate-600 bg-slate-900 px-3 py-2 text-sm text-slate-100">
+            <input wire:model.live="dateTo" type="date" class="rounded border border-slate-600 bg-slate-900 px-3 py-2 text-sm text-slate-100">
+            <button type="button" wire:click="clearFilters" class="rounded bg-slate-700 px-3 py-2 text-sm text-slate-100 hover:bg-slate-600">Clear Filters</button>
+        </div>
+
+        <ul class="mt-4 divide-y divide-slate-700">
             @forelse ($messages as $message)
                 <li class="py-4">
                     <div class="flex items-start justify-between gap-4">
                         <div>
-                            <a href="{{ route('contacts.show', $message) }}" class="text-lg text-gray-200 hover:text-white">
+                            <a wire:navigate href="{{ route('contacts.show', $message) }}" class="text-lg text-slate-100 hover:text-sky-300">
                                 {{ $message->name }}
                             </a>
-                            <p class="line-clamp-1 text-sm text-gray-400">{{ $message->message }}</p>
-                            <p class="text-xs text-blue-400">{{ $message->created_at->format('M d, Y H:i A') }}</p>
+                            <p class="text-sm text-sky-300">{{ $message->email }}</p>
+                            <p class="line-clamp-1 text-sm text-slate-300">{{ $message->message }}</p>
+                            <p class="text-xs text-slate-400">{{ $message->created_at->format('M d, Y H:i A') }}</p>
                         </div>
-                        <button type="button" wire:click="deleteMessage({{ $message->id }})" class="text-sm text-red-300 hover:text-red-200">
+                        <button type="button" wire:click="deleteMessage({{ $message->id }})" wire:confirm="Delete this contact message?" class="rounded border border-red-500/40 px-3 py-1 text-xs text-red-300 hover:bg-red-500/10">
                             Delete
                         </button>
                     </div>
                 </li>
             @empty
-                <li class="py-4 text-gray-400">No messages yet.</li>
+                <li class="py-6 text-center text-slate-400">No messages found.</li>
             @endforelse
         </ul>
 
@@ -37,4 +43,4 @@
             {{ $messages->links() }}
         </div>
     </div>
-</x-app-layout>
+</div>

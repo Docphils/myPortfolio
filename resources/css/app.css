@@ -1,1 +1,136 @@
 @import "tailwindcss";
+
+@keyframes float-slow {
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-12px);
+    }
+}
+
+@keyframes float-delay {
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(12px);
+    }
+}
+
+.homepage-shell {
+    background:
+        radial-gradient(circle at 12% 20%, rgba(14, 165, 233, 0.08), transparent 38%),
+        radial-gradient(circle at 88% 90%, rgba(59, 130, 246, 0.1), transparent 32%),
+        #030712;
+}
+
+.hero-aurora::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, rgba(8, 47, 73, 0.25), rgba(30, 58, 138, 0.2), rgba(15, 23, 42, 0.6));
+}
+
+.hero-parallax {
+    transform: scale(1.03);
+}
+
+.float-slow {
+    animation: float-slow 5.5s ease-in-out infinite;
+}
+
+.float-delay {
+    animation: float-delay 6.2s ease-in-out infinite;
+}
+
+.card-lift {
+    transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+}
+
+.card-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 30px -20px rgba(8, 145, 178, 0.45);
+    border-color: rgba(125, 211, 252, 0.4);
+}
+
+.step-glow {
+    position: relative;
+    overflow: hidden;
+}
+
+.step-glow::before {
+    content: "";
+    position: absolute;
+    top: -40%;
+    left: -30%;
+    width: 50%;
+    height: 180%;
+    background: linear-gradient(120deg, transparent, rgba(56, 189, 248, 0.12), transparent);
+    transform: rotate(20deg);
+    transition: left 380ms ease;
+}
+
+.step-glow:hover::before {
+    left: 95%;
+}
+
+[data-animate] {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 650ms ease, transform 650ms ease;
+}
+
+[data-animate].animate-pending {
+    opacity: 0;
+    transform: translateY(24px);
+}
+
+[data-animate].is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .float-slow,
+    .float-delay {
+        animation: none;
+    }
+
+    [data-animate] {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+}
+
+.testimonial-stage {
+    position: relative;
+}
+
+.testimonial-slide {
+    display: none;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 320ms ease, transform 320ms ease;
+}
+
+.testimonial-slide.is-active {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.testimonial-dot {
+    transition: transform 220ms ease, background-color 220ms ease;
+}
+
+.testimonial-dot:hover {
+    transform: scale(1.15);
+}
+
+.testimonial-dot.is-active {
+    background-color: rgb(103 232 249);
+}
