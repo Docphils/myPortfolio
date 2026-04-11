@@ -346,7 +346,7 @@
                     @error('email') <p class="mt-1 text-sm text-red-400">{{ $message }}</p> @enderror
                 </div>
                 <div>
-                    <label for="message" class="mb-1 block text-sm text-gray-300">Project Brief</label>
+                    <label for="message" class="mb-1 block text-sm text-gray-300">Message</label>
                     <textarea wire:model="message" id="message" rows="5" class="w-full rounded-md border border-gray-700 bg-gray-800 px-3 py-2 text-white focus:border-cyan-400 focus:outline-none"></textarea>
                     @error('message') <p class="mt-1 text-sm text-red-400">{{ $message }}</p> @enderror
                 </div>
