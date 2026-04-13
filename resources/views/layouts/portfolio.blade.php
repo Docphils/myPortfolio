@@ -44,6 +44,8 @@
 
     {{ $slot }}
 
+    @include('layouts.footer')
+
     @livewireScripts
 </body>
 </html>
