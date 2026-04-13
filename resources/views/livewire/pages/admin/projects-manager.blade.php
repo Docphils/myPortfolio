@@ -37,9 +37,40 @@
         <div class="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             @forelse ($projects as $project)
                 <article class="overflow-hidden rounded-xl border border-slate-700 bg-slate-900 shadow-sm">
-                    @if (count($project->imageMedia()) > 0)
-                        <img src="{{ asset('storage/'.$project->imageMedia()[0]) }}" alt="{{ $project->title }}" class="h-48 w-full object-cover">
-                    @endif
+                    @php
+                        $images = $project->imageMedia();
+                        $videos = $project->videoMedia();
+                    @endphp
+
+                    <div class="relative">
+                        @if (count($images) > 0)
+                            <img src="{{ asset('storage/' . $images[0]) }}" alt="{{ $project->title }}" class="h-48 w-full object-cover">
+                        @elseif (count($videos) > 0)
+                            <video controls preload="metadata" playsinline class="h-48 w-full bg-black object-cover">
+                                <source src="{{ asset('storage/' . $videos[0]) }}" type="video/mp4">
+                            </video>
+                        @else
+                            <div class="flex h-48 w-full items-center justify-center bg-slate-950 text-sm text-slate-400">
+                                No media uploaded
+                            </div>
+                        @endif
+
+                        @if (count($images) > 0 || count($videos) > 0)
+                            <div class="absolute left-3 top-3 flex flex-wrap gap-2 text-[11px] font-semibold">
+                                @if (count($images) > 0)
+                                    <span class="rounded-full bg-black/65 px-2 py-1 text-white">
+                                        {{ count($images) }} image{{ count($images) > 1 ? 's' : '' }}
+                                    </span>
+                                @endif
+                                @if (count($videos) > 0)
+                                    <span class="rounded-full bg-black/65 px-2 py-1 text-white">
+                                        {{ count($videos) }} video{{ count($videos) > 1 ? 's' : '' }}
+                                    </span>
+                                @endif
+                            </div>
+                        @endif
+                    </div>
+
                     <div class="p-4">
                         <div class="mb-2 flex flex-wrap gap-2 text-xs">
                             <span class="rounded px-2 py-0.5 {{ $project->is_published ? 'bg-green-500/20 text-green-300' : 'bg-yellow-500/20 text-yellow-300' }}">

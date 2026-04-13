@@ -20,9 +20,40 @@
     <div class="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         @forelse ($projects as $project)
             <article class="overflow-hidden rounded-xl border border-gray-700 bg-gray-900">
-                @if (count($project->imageMedia()) > 0)
-                    <img src="{{ asset('storage/'.$project->imageMedia()[0]) }}" alt="{{ $project->title }}" class="h-48 w-full object-cover">
-                @endif
+                @php
+                    $images = $project->imageMedia();
+                    $videos = $project->videoMedia();
+                @endphp
+
+                <div class="relative">
+                    @if (count($images) > 0)
+                        <img src="{{ asset('storage/' . $images[0]) }}" alt="{{ $project->title }}" class="h-48 w-full object-cover">
+                    @elseif (count($videos) > 0)
+                        <video controls preload="metadata" playsinline class="h-48 w-full bg-black object-cover">
+                            <source src="{{ asset('storage/' . $videos[0]) }}" type="video/mp4">
+                        </video>
+                    @else
+                        <div class="flex h-48 w-full items-center justify-center bg-gray-950 text-sm text-gray-400">
+                            No media available
+                        </div>
+                    @endif
+
+                    @if (count($images) > 0 || count($videos) > 0)
+                        <div class="absolute left-3 top-3 flex flex-wrap gap-2 text-[11px] font-semibold">
+                            @if (count($images) > 0)
+                                <span class="rounded-full bg-black/65 px-2 py-1 text-white">
+                                    {{ count($images) }} image{{ count($images) > 1 ? 's' : '' }}
+                                </span>
+                            @endif
+                            @if (count($videos) > 0)
+                                <span class="rounded-full bg-black/65 px-2 py-1 text-white">
+                                    {{ count($videos) }} video{{ count($videos) > 1 ? 's' : '' }}
+                                </span>
+                            @endif
+                        </div>
+                    @endif
+                </div>
+
                 <div class="p-4">
                     <a wire:navigate href="{{ route('projects.show', $project) }}" class="text-xl font-semibold underline">{{ $project->title }}</a>
                     <p class="mt-2 line-clamp-3 text-sm text-gray-300">{{ $project->description }}</p>
