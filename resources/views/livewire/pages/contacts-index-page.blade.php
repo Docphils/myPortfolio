@@ -4,11 +4,6 @@
     </x-slot>
 
     <div class="mx-auto mt-8 w-full max-w-5xl rounded-lg border border-slate-700 bg-slate-900 p-8 shadow-sm">
-        @if (session('success'))
-            <div class="mb-4 rounded-md border border-emerald-500/40 bg-emerald-500/10 p-3 text-emerald-200">
-                {{ session('success') }}
-            </div>
-        @endif
 
         <div class="grid gap-3 rounded-xl border border-slate-700 bg-slate-800 p-4 md:grid-cols-4">
             <input wire:model.live.debounce.300ms="search" type="text" placeholder="Search messages..." class="rounded border border-slate-600 bg-slate-900 px-3 py-2 text-sm text-slate-100">

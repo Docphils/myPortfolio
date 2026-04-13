@@ -32,7 +32,7 @@
                 </h1>
                 <p class="mt-5 max-w-xl text-base text-gray-200 sm:text-lg">
                     I craft high-performance web products, learning platforms, and growth-ready systems with Laravel,
-                    Livewire, and thoughtful UX execution.
+                    Livewire, MERN stack, and thoughtful UX execution.
                 </p>
                 <div class="mt-8 flex flex-wrap items-center gap-3">
                     <button type="button" wire:click="openProjectStarter"

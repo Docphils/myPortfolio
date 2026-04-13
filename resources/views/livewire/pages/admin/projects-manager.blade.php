@@ -9,12 +9,6 @@
     </x-slot>
 
     <div class="mx-auto max-w-7xl px-6 py-8">
-        @if (session('success'))
-            <div class="mb-4 rounded-md border border-emerald-500/40 bg-emerald-500/10 p-3 text-sm text-emerald-200">
-                {{ session('success') }}
-            </div>
-        @endif
-
         <div class="grid gap-3 rounded-xl border border-slate-700 bg-slate-900 p-4 shadow-sm md:grid-cols-4">
             <input wire:model.live.debounce.300ms="search" type="text" placeholder="Search projects..." class="rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-slate-100">
             <select wire:model.live="status" class="rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-slate-100">

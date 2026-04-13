@@ -131,6 +131,7 @@ class ProjectFormPage extends Component
         ]);
 
         if (!$project->exists) {
+            $project->media = '';
             $project->save();
         }
 
