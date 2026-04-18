@@ -215,6 +215,28 @@ class HomePage extends Component
             'totalProjects' => $totalProjects,
             'totalMessages' => $totalMessages,
             'yearsExperience' => $yearsExperience,
-        ])->layout('layouts.portfolio');
+        ])->layout('layouts.portfolio', [
+            'title' => 'Fullstack Developer Portfolio',
+            'description' => 'DocPhils builds high-performance Laravel, Livewire, and MERN products with a focus on business outcomes, speed, and growth.',
+            'canonical' => route('welcome'),
+            'image' => 'images/portfolioimage.jpg',
+            'type' => 'website',
+            'structuredData' => [
+                [
+                    '@context' => 'https://schema.org',
+                    '@type' => 'ProfessionalService',
+                    'name' => 'DocPhils',
+                    'url' => route('welcome'),
+                    'description' => 'Fullstack development and product engineering services for web platforms and digital products.',
+                    'areaServed' => 'Worldwide',
+                    'serviceType' => [
+                        'Product Engineering',
+                        'EdTech Platform Development',
+                        'Performance Optimization',
+                        'Technical Strategy',
+                    ],
+                ],
+            ],
+        ]);
     }
 }

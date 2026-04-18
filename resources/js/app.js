@@ -2,6 +2,7 @@ import './bootstrap';
 
 const uiRuntime = {
     testimonialIntervals: [],
+    sectionNav: null,
 };
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -19,6 +20,7 @@ document.addEventListener('livewire:navigated', () => {
 
 function bootPageUi() {
     setupMobileMenu();
+    setupSectionAwareNav();
     setupScrollReveal();
     setupCounterAnimation();
     setupTestimonialRotation();
@@ -28,6 +30,12 @@ function bootPageUi() {
 function cleanupRuntime() {
     uiRuntime.testimonialIntervals.forEach((id) => clearInterval(id));
     uiRuntime.testimonialIntervals = [];
+
+    if (uiRuntime.sectionNav) {
+        window.removeEventListener('scroll', uiRuntime.sectionNav.onScroll);
+        window.removeEventListener('hashchange', uiRuntime.sectionNav.onHashChange);
+        uiRuntime.sectionNav = null;
+    }
 }
 
 function setupMobileMenu() {
@@ -209,4 +217,83 @@ function applyHashScroll() {
     setTimeout(() => {
         section.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 40);
+}
+
+function setupSectionAwareNav() {
+    if (document.body.dataset.homeRoute !== '1') {
+        return;
+    }
+
+    const links = Array.from(document.querySelectorAll('[data-nav-key]'));
+    if (links.length === 0) {
+        return;
+    }
+
+    const sections = {
+        about: document.getElementById('about'),
+        projects: document.getElementById('projects'),
+        contact: document.getElementById('contact'),
+    };
+
+    const applyState = (activeKey) => {
+        links.forEach((link) => {
+            const key = link.dataset.navKey;
+            const activeClass = (link.dataset.activeClass || '').split(' ').filter(Boolean);
+            const inactiveClass = (link.dataset.inactiveClass || '').split(' ').filter(Boolean);
+            const isActive = key === activeKey;
+
+            if (isActive) {
+                inactiveClass.forEach((className) => link.classList.remove(className));
+                activeClass.forEach((className) => link.classList.add(className));
+                link.setAttribute('aria-current', 'page');
+            } else {
+                activeClass.forEach((className) => link.classList.remove(className));
+                inactiveClass.forEach((className) => link.classList.add(className));
+                link.setAttribute('aria-current', 'false');
+            }
+        });
+    };
+
+    const keyFromHash = () => {
+        const hash = window.location.hash.replace('#', '').trim().toLowerCase();
+        if (hash === 'about' || hash === 'projects' || hash === 'contact') {
+            return hash;
+        }
+
+        return 'home';
+    };
+
+    const keyFromScroll = () => {
+        const offset = 120;
+        const marker = window.scrollY + offset;
+
+        if (sections.contact && sections.contact.offsetTop <= marker) {
+            return 'contact';
+        }
+        if (sections.projects && sections.projects.offsetTop <= marker) {
+            return 'projects';
+        }
+        if (sections.about && sections.about.offsetTop <= marker) {
+            return 'about';
+        }
+
+        return 'home';
+    };
+
+    const onScroll = () => {
+        const nextKey = keyFromScroll();
+        applyState(nextKey);
+    };
+
+    const onHashChange = () => {
+        const nextKey = keyFromHash();
+        applyState(nextKey);
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('hashchange', onHashChange);
+
+    applyState(window.location.hash ? keyFromHash() : keyFromScroll());
+
+    uiRuntime.sectionNav = { onScroll, onHashChange };
 }

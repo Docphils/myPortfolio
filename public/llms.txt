@@ -1,0 +1,16 @@
+# DocPhils Portfolio
+
+DocPhils is a fullstack developer portfolio focused on Laravel, Livewire, MERN, EdTech systems, and performance-first product engineering.
+
+## Primary URLs
+- https://docphils.mephed.ng/
+- https://docphils.mephed.ng/projects
+- https://docphils.mephed.ng/sitemap.xml
+
+## Scope
+- Public marketing pages
+- Published projects
+- Published case studies
+
+## Contact
+- Use the contact form on the homepage: https://docphils.mephed.ng/#contact
